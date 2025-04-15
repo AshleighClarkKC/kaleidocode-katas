@@ -13,6 +13,10 @@
 *.userosscache
 *.sln.docstates
 
+# Don't be lazy. Create proper files.
+[Cc]lass1.cs
+*/[Cc]lass1.cs
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
