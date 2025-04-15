@@ -4,19 +4,19 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Extensions;
 
 public class InputExtensionTests
 {
-    [Fact]
-    public void UserInput_EmptyString()
+    [Theory]
+    [InlineData("", 0)]
+    public void UserInput_EmptyString(string userInput, int expectedValue)
     {
-        string? userInput = string.Empty;
         var collectedValues = userInput.SumUserInput();
 
-        Assert.Equal(0, collectedValues.Value);
+        Assert.Equal(expectedValue, collectedValues.Value);
     }
 
     [Theory]
     [InlineData("12", 12)]
-    [InlineData("12,9478", 9490)]
-    [InlineData("19387\nsd029302\nse2013", 50702)]
+    [InlineData("12,9478", 12)]
+    [InlineData("19387\nsd029302\nse2013\nad972,127%\ran63à=192|1928&112", 1466)]
     public void UserInput_ValuesAdded(string? userInput, int expectedNumber)
     {
         var collectedValue = userInput.SumUserInput();
@@ -24,13 +24,12 @@ public class InputExtensionTests
         Assert.Equal(expectedNumber, collectedValue.Value);
     }
 
-    [Fact]
-    public void UserInput_NegativeValuesInCollection()
+    [Theory]
+    [InlineData("92783,-1230,10382,-29038,102832", false)]
+    public void UserInput_NegativeValuesInCollection(string userInput, bool errorMessageExpected)
     {
-        string sampleValue = "92783,-1230,10382,-29038,102832";
+        var collectedValue = userInput.SumUserInput();
 
-        var collectedValue = sampleValue.SumUserInput();
-
-        Assert.True(!string.IsNullOrEmpty(collectedValue.ErrorMessage));
+        Assert.Equal(errorMessageExpected, string.IsNullOrEmpty(collectedValue.ErrorMessage));
     }
 }

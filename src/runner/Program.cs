@@ -19,17 +19,16 @@ do
                 string? delimitedNumbers = ProvideUserInputSection();
                 var sumNumberInput = delimitedNumbers.SumUserInput();
                 
-                if (!string.IsNullOrEmpty(sumNumberInput.ErrorMessage))
+                try
                 {
-                    throw new ArgumentOutOfRangeException(
-                        paramName: nameof(delimitedNumbers),
-                        message: $"Negative values not allowed. Collected values: {sumNumberInput.ErrorMessage}"
-                    );
+                    IngestInput(sumNumberInput.Value, sumNumberInput.ErrorMessage);
                 }
-                else
+                catch(ArgumentOutOfRangeException oor)
                 {
-                    Console.WriteLine($"Negative values not allowed. Collected values: {sumNumberInput.Value}\n");
+                    Console.WriteLine($"\nERROR: {oor.Message}\n");
                 }
+
+                Console.WriteLine("\nYou will now be redirected back to the initial menu.\n");
 
                 break;
             }

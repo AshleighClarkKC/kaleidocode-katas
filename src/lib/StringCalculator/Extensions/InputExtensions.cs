@@ -27,7 +27,10 @@ public static class InputExtensions
                 {
                     if (parsedValue >= 0)
                     {
-                        res.Add(parsedValue);
+                        if (parsedValue < 1000)
+                        {
+                            res.Add(parsedValue);
+                        }
                     }
                     else
                     {

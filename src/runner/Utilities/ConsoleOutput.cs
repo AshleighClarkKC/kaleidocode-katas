@@ -57,4 +57,24 @@ public class ConsoleOutput
         return ReadLine();
     }
 
+    public static void PrintValue(int? value)
+    {
+        WriteLine($"\nSum of your input: {value}.\n");
+    }
+
+    public static void IngestInput(int? result, string? errorMessage)
+    {
+        if (!string.IsNullOrEmpty(errorMessage))
+        {
+            throw new ArgumentOutOfRangeException(
+                paramName: nameof(result),
+                message: $"Negative values not allowed. Collected values: {errorMessage}."
+            );
+        }
+        else
+        {
+            PrintValue(result);
+        }
+    }
+
 }
