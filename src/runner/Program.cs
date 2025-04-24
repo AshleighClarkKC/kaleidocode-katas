@@ -31,7 +31,7 @@ do
                     {
                         ArithmeticHelper ah = new ();
                         int sumOfNumbersInCollection = ah.Add(collectedNumbers);
-                        Console.WriteLine($"\nSum of Added Numbers: {sumOfNumbersInCollection}.");
+                        PrintValue(sumOfNumbersInCollection);
                     }
 
                 }
