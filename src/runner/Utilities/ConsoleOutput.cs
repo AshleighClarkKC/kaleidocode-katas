@@ -47,7 +47,7 @@ public class ConsoleOutput
     public static void PrintStringCalculatorEntryPrompt()
     {
         WriteLine("\nSelected Function: String Calculator");
-        WriteLine("Please enter a string list with a uniform separator.");
+        WriteLine("Please enter a string list with separators.");
         WriteLine("e.g. 28,87,1983,9986 or 982\\n83672\\n992");
     }
 

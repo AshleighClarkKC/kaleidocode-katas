@@ -1,9 +1,10 @@
 ﻿using Kaleidocode.Katas.Runner.Enumerations;
-using Kaleidocode.Katas.Libraries;
 using static Kaleidocode.Katas.Runner.Utilities.ConsoleOutput;
-using Kaleidocode.Katas.Libraries.StringCalculator.Extensions;
+using Kaleidocode.Katas.Libraries.StringCalculator.Parsers;
+using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
+using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
 
-int userChoice = 0;
+int userChoice;
 
 do
 {
@@ -17,11 +18,22 @@ do
             {
                 PrintStringCalculatorEntryPrompt();
                 string? delimitedNumbers = ProvideUserInputSection();
-                var sumNumberInput = delimitedNumbers.SumUserInput();
                 
                 try
                 {
-                    IngestInput(sumNumberInput.Value, sumNumberInput.ErrorMessage);
+                    InputParser numParser = new (delimitedNumbers);
+                    IEnumerable<int> collectedNumbers = numParser.CollectNumbers();
+                    InputValidator inputValidator = new (collectedNumbers);
+
+                    bool evaluationSuccessful = inputValidator.EvaluateCollection();
+
+                    if (evaluationSuccessful)
+                    {
+                        ArithmeticHelper ah = new ();
+                        int sumOfNumbersInCollection = ah.Add(collectedNumbers);
+                        Console.WriteLine($"\nSum of Added Numbers: {sumOfNumbersInCollection}.");
+                    }
+
                 }
                 catch(ArgumentOutOfRangeException oor)
                 {
