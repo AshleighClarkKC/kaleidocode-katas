@@ -4,8 +4,7 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 
 namespace Kaleidocode.Katas.Tests;
 
-
-public class InputExtensionTests
+public class UserInputTests
 {
     [Theory]
     [InlineData("", 0)]
