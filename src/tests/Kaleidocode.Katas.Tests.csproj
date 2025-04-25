@@ -22,4 +22,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\lib\Kaleidocode.Katas.Libraries.csproj" />
+  </ItemGroup>
+
 </Project>

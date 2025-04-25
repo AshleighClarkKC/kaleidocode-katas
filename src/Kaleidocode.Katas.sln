@@ -7,22 +7,59 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaleidocode.Katas.Runner", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaleidocode.Katas.Tests", "tests\Kaleidocode.Katas.Tests.csproj", "{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kaleidocode.Katas.Libraries", "lib\Kaleidocode.Katas.Libraries.csproj", "{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{13A68583-8588-4631-A0A0-856A79932E09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{13A68583-8588-4631-A0A0-856A79932E09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Debug|x64.Build.0 = Debug|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Debug|x86.Build.0 = Debug|Any CPU
 		{13A68583-8588-4631-A0A0-856A79932E09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{13A68583-8588-4631-A0A0-856A79932E09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Release|x64.ActiveCfg = Release|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Release|x64.Build.0 = Release|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Release|x86.ActiveCfg = Release|Any CPU
+		{13A68583-8588-4631-A0A0-856A79932E09}.Release|x86.Build.0 = Release|Any CPU
 		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Debug|x64.Build.0 = Debug|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Debug|x86.Build.0 = Debug|Any CPU
 		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Release|x64.ActiveCfg = Release|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Release|x64.Build.0 = Release|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Release|x86.ActiveCfg = Release|Any CPU
+		{1BDFA9D3-949A-4642-ACED-2DF29CA53C3B}.Release|x86.Build.0 = Release|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Debug|x64.Build.0 = Debug|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Debug|x86.Build.0 = Debug|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Release|x64.ActiveCfg = Release|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Release|x64.Build.0 = Release|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Release|x86.ActiveCfg = Release|Any CPU
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{7A1F4F0C-BF87-46CA-93F8-66214EEF5CF4} = {3A8DF596-E814-FECC-DD4B-D8EF8AAC1A0D}
 	EndGlobalSection
 EndGlobal
