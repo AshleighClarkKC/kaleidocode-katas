@@ -8,18 +8,20 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Helpers
 {
     public class ArithmeticHelper(int? maxIntValue = 1000)
     {
-        private int? MaxIntegerValue { get; init; } = maxIntValue;
+        private int? MaxValue { get; init; } = maxIntValue;
 
-        /// <summary>
-        /// Sums up values in the provided collection.
-        /// </summary>
-        /// <param name="values">The collection of accepted values.</param>
-        /// <returns>Returns the added value of the elements in the provided collection.</returns>
-        public int Add(IEnumerable<int> values)
+        public int Add(IEnumerable<int> values) 
+            // Values over the maxVal are to be ignored by rule of Kata 1.
+            => (values.Where(w => w < MaxValue))
+                .Sum();
+
+        public static int Subtract(IEnumerable<int> values) 
         {
-            var sanitizedValues = values.Where(w => w < MaxIntegerValue);
+            int subtractedValue = 0;
 
-            return sanitizedValues.Sum();
+            foreach (int val in values) { subtractedValue -= val; }
+
+            return subtractedValue;
         }
     }
 }

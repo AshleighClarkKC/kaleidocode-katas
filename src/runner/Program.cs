@@ -3,8 +3,12 @@ using static Kaleidocode.Katas.Runner.Utilities.ConsoleOutput;
 using Kaleidocode.Katas.Libraries.StringCalculator.Parsers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
+using Kaleidocode.Katas.Libraries.Contracts;
+using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
+
 
 int userChoice;
+IValidator inputValidator;
 
 do
 {
@@ -14,7 +18,7 @@ do
 
     switch (userChoice) 
     {
-        case (int)UserOption.UserCalculator:
+        case (int)UserOption.AdditionCalculator:
             {
                 PrintStringCalculatorEntryPrompt();
                 string? delimitedNumbers = ProvideUserInputSection();
@@ -22,10 +26,10 @@ do
                 try
                 {
                     InputParser numParser = new (delimitedNumbers);
-                    IEnumerable<int> collectedNumbers = numParser.CollectNumbers();
-                    InputValidator inputValidator = new (collectedNumbers);
+                    IEnumerable<int> collectedNumbers = numParser.CollectNumbers(ExtractionMethod.StrictNumeric);
+                    inputValidator = new AdditionValidator(collectedNumbers, i => int.IsNegative(i));
 
-                    bool evaluationSuccessful = inputValidator.EvaluateCollection();
+                    bool evaluationSuccessful = inputValidator.Validate();
 
                     if (evaluationSuccessful)
                     {
@@ -44,8 +48,12 @@ do
 
                 break;
             }
-        case (int)UserOption.Exit: { break; }
+        case (int)UserOption.SubtractionCalculator:
+            {
+                break;
+            }
+        case (int) UserOption.Exit: { break; }
         default: { break; }
     }
 }
-while (!userChoice.Equals((int)UserOption.Exit));
+while (!userChoice.Equals((int) UserOption.Exit));

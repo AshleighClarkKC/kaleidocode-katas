@@ -1,55 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
 namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 {
-    /// <summary>
-    /// Responsible for converting the string input provided by <see cref="Console.ReadLine" />.
-    /// </summary>
-    /// <param name="userInput">The input received from stdin (<see cref="Console.ReadLine">).</param>
     public class InputParser(string? userInput)
     {
-        public string? UserInput { get; init; } = userInput ?? string.Empty;
+        public string? UserInput { get; private set; } = userInput ?? string.Empty;
 
-        /// <summary>
-        /// Filters out numbers from the delimiters since they do not need to be uniform.
-        /// </summary>
-        /// <returns>Returns a list of numbers that are unsanitized.</returns>
-        public IEnumerable<int> CollectNumbers()
+        public void SetUserInputValue(string value) 
+            => UserInput = value;
+
+        public IEnumerable<int> CollectNumbers(ExtractionMethod extractionMethod)
         {
-            List<int> collectedNumbers = [];
+            IEnumerable<int> collectedNumbers = [];
 
             if (string.IsNullOrWhiteSpace(UserInput)) { return [0]; }
 
-            StringBuilder sb = new ();
-
             for (int iterator = 0; iterator < UserInput.Length; iterator++)
             {
-                char focusedCharacter = UserInput[iterator];
+                var iteratedChar = UserInput[iterator];
 
-                if (focusedCharacter.Equals('-') || int.TryParse(focusedCharacter.ToString(), out _))
-                {
-                    sb.Append(focusedCharacter);
-                }
-                else
-                {
-                    if (!(sb[sb.Length - 1].Equals(',')))
-                    {
-                        sb.Append(',');
-                    }
-                }
+                collectedNumbers = ExtractNumbers(iteratedChar, extractionMethod);
             }
-
-            var numberSample = (sb.ToString())
-                .Split(',')
-                .Select(s => int.Parse(s));
-
-            collectedNumbers.AddRange(numberSample);
 
             return collectedNumbers;
         }
+
+        private static IEnumerable<int> ExtractNumbers(char focusedChar, ExtractionMethod extractionMethod)
+        {
+            var sb = new StringBuilder();
+
+            switch (extractionMethod)
+            {
+                case ExtractionMethod.StrictNumeric: 
+                    {
+                        if (focusedChar.Equals('-') || int.TryParse(focusedChar.ToString(), out _))
+                        {
+                            sb.Append(focusedChar);
+                        }
+                        else
+                        {
+                            if (!(sb[sb.Length - 1].Equals(',')))
+                            {
+                                sb.Append(',');
+                            }
+                        }
+                        break;
+                    }
+                case ExtractionMethod.Alphanumeric: 
+                    { 
+                        if (focusedChar.Equals("-") || 
+                            int.TryParse(focusedChar.ToString(), out _) || 
+                            (char.GetNumericValue(focusedChar) >= 0 && char.GetNumericValue(focusedChar) <= 9))
+                        {
+                            sb.Append(focusedChar);
+                        }
+                        else
+                        {
+                            sb.Append(',');
+                        }
+                        break; 
+                    }
+                default: 
+                    { 
+                        throw new ArgumentException($"\"{nameof(ExtractionMethod)}\" parameter has an invalid value", nameof(extractionMethod)); 
+                    }
+            }
+
+            yield return int.Parse(sb.ToString());
+        }
+
     }
 }
