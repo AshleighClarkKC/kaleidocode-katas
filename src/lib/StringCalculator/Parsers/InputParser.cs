@@ -21,59 +21,62 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 
             if (string.IsNullOrWhiteSpace(UserInput)) { return [0]; }
 
-            for (int iterator = 0; iterator < UserInput.Length; iterator++)
-            {
-                var iteratedChar = UserInput[iterator];
-
-                collectedNumbers = ExtractNumbers(iteratedChar, extractionMethod);
-            }
+            collectedNumbers = ExtractNumbers(UserInput, extractionMethod);
 
             return collectedNumbers;
         }
 
-        private static IEnumerable<int> ExtractNumbers(char focusedChar, ExtractionMethod extractionMethod)
+        private static IEnumerable<int> ExtractNumbers(string input, ExtractionMethod extractionMethod)
         {
             var sb = new StringBuilder();
 
-            switch (extractionMethod)
+            for (int iterator = 0; iterator < input.Length; iterator++)
             {
-                case ExtractionMethod.StrictNumeric: 
-                    {
-                        if (focusedChar.Equals('-') || int.TryParse(focusedChar.ToString(), out _))
+                var focusedChar = input[iterator];
+
+                switch (extractionMethod)
+                {
+                    case ExtractionMethod.StrictNumeric:
                         {
-                            sb.Append(focusedChar);
+                            if (focusedChar.Equals('-') || int.TryParse(focusedChar.ToString(), out _))
+                            {
+                                sb.Append(focusedChar);
+                            }
+                            else
+                            {
+                                if (!(sb[sb.Length - 1].Equals(',')))
+                                {
+                                    sb.Append(',');
+                                }
+                            }
+                            break;
                         }
-                        else
+                    case ExtractionMethod.Alphanumeric:
                         {
-                            if (!(sb[sb.Length - 1].Equals(',')))
+                            if (focusedChar.Equals("-") ||
+                                int.TryParse(focusedChar.ToString(), out _) ||
+                                (char.GetNumericValue(focusedChar) >= 0 && char.GetNumericValue(focusedChar) <= 9))
+                            {
+                                sb.Append(focusedChar);
+                            }
+                            else
                             {
                                 sb.Append(',');
                             }
+                            break;
                         }
-                        break;
-                    }
-                case ExtractionMethod.Alphanumeric: 
-                    { 
-                        if (focusedChar.Equals("-") || 
-                            int.TryParse(focusedChar.ToString(), out _) || 
-                            (char.GetNumericValue(focusedChar) >= 0 && char.GetNumericValue(focusedChar) <= 9))
+                    default:
                         {
-                            sb.Append(focusedChar);
+                            throw new ArgumentException($"\"{nameof(ExtractionMethod)}\" parameter has an invalid value", nameof(extractionMethod));
                         }
-                        else
-                        {
-                            sb.Append(',');
-                        }
-                        break; 
-                    }
-                default: 
-                    { 
-                        throw new ArgumentException($"\"{nameof(ExtractionMethod)}\" parameter has an invalid value", nameof(extractionMethod)); 
-                    }
+                }
+
             }
 
-            yield return int.Parse(sb.ToString());
-        }
+            return (sb.ToString())
+                .Split(',')
+                .Select(s => int.Parse(s));
 
+        }
     }
 }
