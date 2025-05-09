@@ -1,55 +1,117 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using Kaleidocode.Katas.Libraries.Contracts;
+using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
 namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 {
-    /// <summary>
-    /// Responsible for converting the string input provided by <see cref="Console.ReadLine" />.
-    /// </summary>
-    /// <param name="userInput">The input received from stdin (<see cref="Console.ReadLine">).</param>
-    public class InputParser(string? userInput)
+    public class InputParser(string? userInput = null) : IParser
     {
-        public string? UserInput { get; init; } = userInput ?? string.Empty;
+        public string? UserInput { get; private set; } = userInput ?? string.Empty;
 
-        /// <summary>
-        /// Filters out numbers from the delimiters since they do not need to be uniform.
-        /// </summary>
-        /// <returns>Returns a list of numbers that are unsanitized.</returns>
-        public IEnumerable<int> CollectNumbers()
+        public void SetInputValue(string value) 
+            => UserInput = value;
+
+        public IEnumerable<int> CollectNumbers(ExtractionMethod extractionMethod)
         {
-            List<int> collectedNumbers = [];
+            if (string.IsNullOrEmpty(UserInput)) { return [0]; }
 
-            if (string.IsNullOrWhiteSpace(UserInput)) { return [0]; }
+            IEnumerable<int> collectedNumbers = ExtractValues(UserInput, extractionMethod);
 
-            StringBuilder sb = new ();
+            return collectedNumbers;
+        }
 
-            for (int iterator = 0; iterator < UserInput.Length; iterator++)
+        private static IEnumerable<int> ExtractValues(string input, ExtractionMethod extractionMethod)
+        {
+            var sb = new StringBuilder();
+
+            for (int iterator = 0; iterator < input.Length; iterator++)
             {
-                char focusedCharacter = UserInput[iterator];
+                var focusedChar = input[iterator];
 
-                if (focusedCharacter.Equals('-') || int.TryParse(focusedCharacter.ToString(), out _))
+                switch (extractionMethod)
                 {
-                    sb.Append(focusedCharacter);
+                    case ExtractionMethod.StrictNumeric:
+                        {
+                            if (focusedChar.Equals('-') || int.TryParse(focusedChar.ToString(), out _))
+                            {
+                                sb.Append(focusedChar);
+                            }
+                            else
+                            {
+                                if (!(sb[sb.Length - 1].Equals(',')))
+                                {
+                                    sb.Append(',');
+                                }
+                            }
+                            break;
+                        }
+                    case ExtractionMethod.Alphanumeric:
+                        {
+                            var currentLetterIndex = ParseCharacter(focusedChar);
+
+                            if (int.TryParse(focusedChar.ToString(), out _) ||
+                                (currentLetterIndex != null && 
+                                (currentLetterIndex >= 0 && currentLetterIndex <= 9))
+                            )
+                            {
+                                sb.Append(currentLetterIndex);
+                            }
+                            else
+                            {
+                                sb.Append(',');
+                            }
+                            break;
+                        }
+                    default:
+                        {
+                            throw new ArgumentException($"\"{nameof(ExtractionMethod)}\" parameter has an invalid value", nameof(extractionMethod));
+                        }
                 }
-                else
+
+            }
+
+            List<int> returnableValues = [];
+
+            foreach (var number in sb.ToString().Split(','))
+            {
+                if (int.TryParse(number, out int parsedValue))
                 {
-                    if (!(sb[sb.Length - 1].Equals(',')))
-                    {
-                        sb.Append(',');
-                    }
+                    returnableValues.Add(parsedValue);
                 }
             }
 
-            var numberSample = (sb.ToString())
-                .Split(',')
-                .Select(s => int.Parse(s));
+            return returnableValues.AsEnumerable();
+        }
 
-            collectedNumbers.AddRange(numberSample);
+        private static int? ParseCharacter(char focusedLetter)
+        {
 
-            return collectedNumbers;
+            bool isNumber = int.TryParse(focusedLetter.ToString(), out int parsedNumber);
+
+            if (isNumber) 
+            {
+                return parsedNumber;
+            }
+
+            var enumerableLetterRange = Enumerable.Range('a', 26)
+                .Select(s => (char)s).ToArray();
+
+            int? matchedValueInt = null;
+
+            for(int iterator = 0; iterator < enumerableLetterRange.Length; iterator++)
+            {
+                if (enumerableLetterRange[iterator] == focusedLetter)
+                {
+                    var el = enumerableLetterRange[iterator];
+                    if (enumerableLetterRange.Contains(el))
+                    {
+                        matchedValueInt = iterator; 
+                        break;
+                    }   
+                }
+            }
+
+            return matchedValueInt;
         }
     }
 }

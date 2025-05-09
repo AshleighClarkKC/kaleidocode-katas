@@ -1,11 +1,13 @@
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
-using Kaleidocode.Katas.Libraries.StringCalculator.Parsers;
-using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
+using Kaleidocode.Katas.Tests.Contracts;
+using Kaleidocode.Katas.Tests.Fixtures;
 
 namespace Kaleidocode.Katas.Tests;
 
-public class UserInputTests
+public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixture>
 {
+    private readonly IFixture _fixture = fixture;
+
     [Theory]
     [InlineData("", 0)]
     public void UserInput_EmptyString(string userInput, int expectedValue)
@@ -28,14 +30,11 @@ public class UserInputTests
     {
         try
         {
-            var ip = new InputParser(userInput);
-            var collectedValues = ip.CollectNumbers();
+            _fixture.SetInputValue(userInput);
+            _fixture.SetTestCondition(input => int.IsNegative(input));
+            bool successful = _fixture.Validate();
 
-            var iv = new InputValidator(collectedValues);
-            bool successful = iv.EvaluateCollection();
-
-            var ah = new ArithmeticHelper();
-            int addedValues = ah.Add(collectedValues);
+            int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
         }
         catch (Exception ex)
         {
@@ -45,14 +44,11 @@ public class UserInputTests
 
     private void AddNumbers(string input, int expected)
     {
-        var ip = new InputParser(input);
-        var collectedValues = ip.CollectNumbers();
+        _fixture.SetInputValue(input);
+        _fixture.SetTestCondition(input => int.IsNegative(input));
+        bool successful = _fixture.Validate();
 
-        var iv = new InputValidator(collectedValues);
-        bool successful = iv.EvaluateCollection();
-
-        var ah = new ArithmeticHelper();
-        int addedValues = ah.Add(collectedValues);
+        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
         Assert.Equal(expected, addedValues);
     }
 }
