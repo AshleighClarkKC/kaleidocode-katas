@@ -8,6 +8,8 @@ namespace Kaleidocode.Katas.Tests.Contracts
 {
     public interface IFixture
     {
+        void SetTestCondition(Func<int, bool> condition);
+
         void SetInputValue(string inputValue);
 
         IEnumerable<int> GetCollectedValues();

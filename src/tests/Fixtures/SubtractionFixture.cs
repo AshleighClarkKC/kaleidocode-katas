@@ -7,7 +7,7 @@ using Kaleidocode.Katas.Tests.Contracts;
 
 namespace Kaleidocode.Katas.Tests.Fixtures
 {
-    public class AdditionFixture : IFixture, IDisposable
+    public class SubtractionFixture : IFixture, IDisposable
     {
         private readonly IValidator _inputValidator;
 
@@ -15,29 +15,29 @@ namespace Kaleidocode.Katas.Tests.Fixtures
 
         private IEnumerable<int> CollectedValues { get; set; } = [];
 
-        public AdditionFixture()
+        public SubtractionFixture()
         {
             _inputParser = new InputParser(string.Empty);
             _inputValidator = new OperationValidator(CollectedValues, null);
         }
 
-        public void SetTestCondition(Func<int, bool> testCondition)
-            => _inputValidator.SetValidationCondition(testCondition);
+        public void SetTestCondition(Func<int, bool> condition)
+            => _inputValidator.SetValidationCondition(condition);
 
-        public void SetInputValue(string value) 
-            => _inputParser.SetInputValue(value);
+        public void SetInputValue(string inputValue)
+            => _inputParser.SetInputValue(inputValue);
 
-        public IEnumerable<int> GetCollectedValues() 
+        public IEnumerable<int> GetCollectedValues()
             => CollectedValues;
 
         public bool Validate()
         {
-            CollectedValues = _inputParser.CollectNumbers(ExtractionMethod.StrictNumeric);
+            CollectedValues = _inputParser.CollectNumbers(ExtractionMethod.Alphanumeric);
             _inputValidator.SetInputCollection(CollectedValues);
-            return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NegativeValuesNotAllowed, input));
+            return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NumbersExceedingLimit, input));
         }
 
-        public void Dispose() 
+        public void Dispose()
         {
             CollectedValues = [];
             GC.SuppressFinalize(this);

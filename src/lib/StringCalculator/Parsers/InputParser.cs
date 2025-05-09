@@ -1,32 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
+using Kaleidocode.Katas.Libraries.Contracts;
 using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
 namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 {
-    public class InputParser(string? userInput)
+    public class InputParser(string? userInput = null) : IParser
     {
         public string? UserInput { get; private set; } = userInput ?? string.Empty;
 
-        public void SetUserInputValue(string value) 
+        public void SetInputValue(string value) 
             => UserInput = value;
 
         public IEnumerable<int> CollectNumbers(ExtractionMethod extractionMethod)
         {
-            IEnumerable<int> collectedNumbers = [];
+            if (string.IsNullOrEmpty(UserInput)) { return [0]; }
 
-            if (string.IsNullOrWhiteSpace(UserInput)) { return [0]; }
-
-            collectedNumbers = ExtractNumbers(UserInput, extractionMethod);
+            IEnumerable<int> collectedNumbers = ExtractValues(UserInput, extractionMethod);
 
             return collectedNumbers;
         }
 
-        private static IEnumerable<int> ExtractNumbers(string input, ExtractionMethod extractionMethod)
+        private static IEnumerable<int> ExtractValues(string input, ExtractionMethod extractionMethod)
         {
             var sb = new StringBuilder();
 
@@ -53,11 +47,14 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
                         }
                     case ExtractionMethod.Alphanumeric:
                         {
-                            if (focusedChar.Equals("-") ||
-                                int.TryParse(focusedChar.ToString(), out _) ||
-                                (char.GetNumericValue(focusedChar) >= 0 && char.GetNumericValue(focusedChar) <= 9))
+                            var currentLetterIndex = ParseCharacter(focusedChar);
+
+                            if (int.TryParse(focusedChar.ToString(), out _) ||
+                                (currentLetterIndex != null && 
+                                (currentLetterIndex >= 0 && currentLetterIndex <= 9))
+                            )
                             {
-                                sb.Append(focusedChar);
+                                sb.Append(currentLetterIndex);
                             }
                             else
                             {
@@ -73,10 +70,48 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 
             }
 
-            return (sb.ToString())
-                .Split(',')
-                .Select(s => int.Parse(s));
+            List<int> returnableValues = [];
 
+            foreach (var number in sb.ToString().Split(','))
+            {
+                if (int.TryParse(number, out int parsedValue))
+                {
+                    returnableValues.Add(parsedValue);
+                }
+            }
+
+            return returnableValues.AsEnumerable();
+        }
+
+        private static int? ParseCharacter(char focusedLetter)
+        {
+
+            bool isNumber = int.TryParse(focusedLetter.ToString(), out int parsedNumber);
+
+            if (isNumber) 
+            {
+                return parsedNumber;
+            }
+
+            var enumerableLetterRange = Enumerable.Range('a', 26)
+                .Select(s => (char)s).ToArray();
+
+            int? matchedValueInt = null;
+
+            for(int iterator = 0; iterator < enumerableLetterRange.Length; iterator++)
+            {
+                if (enumerableLetterRange[iterator] == focusedLetter)
+                {
+                    var el = enumerableLetterRange[iterator];
+                    if (enumerableLetterRange.Contains(el))
+                    {
+                        matchedValueInt = iterator; 
+                        break;
+                    }   
+                }
+            }
+
+            return matchedValueInt;
         }
     }
 }

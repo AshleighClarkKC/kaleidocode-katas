@@ -1,18 +1,12 @@
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
-using Kaleidocode.Katas.Libraries.StringCalculator.Parsers;
-using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 using Kaleidocode.Katas.Tests.Contracts;
 using Kaleidocode.Katas.Tests.Fixtures;
 
 namespace Kaleidocode.Katas.Tests;
 
-public class AdditionTests()
+public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixture>
 {
-    /**
-     * Note: Changed IFixture -> AdditionFixture due to CA1859 (Performance)
-     * Note: AdditionTests not inheriting from IClassFixture<AdditionalFixture> due to custom ctor structure.
-     */
-    private readonly AdditionFixture Fixture = new (input => int.IsNegative(input));
+    private readonly IFixture _fixture = fixture;
 
     [Theory]
     [InlineData("", 0)]
@@ -36,11 +30,11 @@ public class AdditionTests()
     {
         try
         {
-            Fixture.SetInputValue(userInput);
-            bool successful = Fixture.Validate();
+            _fixture.SetInputValue(userInput);
+            _fixture.SetTestCondition(input => int.IsNegative(input));
+            bool successful = _fixture.Validate();
 
-            var ah = new ArithmeticHelper();
-            int addedValues = ah.Add(Fixture.GetCollectedValues());
+            int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
         }
         catch (Exception ex)
         {
@@ -50,11 +44,11 @@ public class AdditionTests()
 
     private void AddNumbers(string input, int expected)
     {
-        Fixture.SetInputValue(input);
-        bool successful = Fixture.Validate();
+        _fixture.SetInputValue(input);
+        _fixture.SetTestCondition(input => int.IsNegative(input));
+        bool successful = _fixture.Validate();
 
-        var ah = new ArithmeticHelper();
-        int addedValues = ah.Add(Fixture.GetCollectedValues());
+        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
         Assert.Equal(expected, addedValues);
     }
 }
