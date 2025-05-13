@@ -87,41 +87,17 @@ public class ConsoleOutput
     {
         try
         {
-            switch (userOption)
-            {
-                case UserOption.AdditionCalculator:
-                    {
-                        bool evaluationSuccessful = validator.Validate(
+            bool evaluationSuccessful = validator.Validate(
                             errorMessageTemplate: input => MessageTemplates.GenerateErrorString(errorCondition, input)
-                        );
+            );
 
-                        if (evaluationSuccessful)
-                        {
-                            int sumOfNumbersInCollection = ArithmeticHelper.Add(parsedNumbers);
-                            PrintValue(sumOfNumbersInCollection);
-                        }
-
-                        break;
-                    }
-                case UserOption.SubtractionCalculator:
-                    {
-                        bool evaluationSuccessful = validator.Validate(
-                            errorMessageTemplate: input => MessageTemplates.GenerateErrorString(errorCondition, input)
-                        );
-
-                        if (evaluationSuccessful)
-                        {
-                            int sumOfNumbersInCollection = ArithmeticHelper.Subtract(parsedNumbers);
-                            PrintValue(sumOfNumbersInCollection);
-                        }
-
-                        break;
-                    }
-                default: { break; }
-            }
-
-
-
+            int sumOfNumbersInCollection = userOption switch {
+                UserOption.AdditionCalculator => ArithmeticHelper.Add(parsedNumbers),
+                UserOption.SubtractionCalculator => ArithmeticHelper.Subtract(parsedNumbers),
+                _ => throw new ArgumentOutOfRangeException(paramName: nameof(userOption))
+            };
+            
+            PrintValue(sumOfNumbersInCollection);
         }
         catch (Exception ex)
         {
