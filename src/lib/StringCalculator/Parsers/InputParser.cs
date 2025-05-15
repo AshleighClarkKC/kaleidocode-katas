@@ -22,7 +22,7 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 
         private static IEnumerable<int> ExtractValues(string input, ExtractionMethod extractionMethod)
         {
-            var sb = new StringBuilder();
+            var acceptedValueCollector = new StringBuilder();
 
             for (int iterator = 0; iterator < input.Length; iterator++)
             {
@@ -34,13 +34,13 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
                         {
                             if (focusedChar.Equals('-') || int.TryParse(focusedChar.ToString(), out _))
                             {
-                                sb.Append(focusedChar);
+                                acceptedValueCollector.Append(focusedChar);
                             }
                             else
                             {
-                                if (!(sb[sb.Length - 1].Equals(',')))
+                                if (!(acceptedValueCollector[acceptedValueCollector.Length - 1].Equals(',')))
                                 {
-                                    sb.Append(',');
+                                    acceptedValueCollector.Append(',');
                                 }
                             }
                             break;
@@ -54,11 +54,11 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
                                 (currentLetterIndex >= 0 && currentLetterIndex <= 9))
                             )
                             {
-                                sb.Append(currentLetterIndex);
+                                acceptedValueCollector.Append(currentLetterIndex);
                             }
                             else
                             {
-                                sb.Append(',');
+                                acceptedValueCollector.Append(',');
                             }
                             break;
                         }
@@ -72,7 +72,7 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 
             List<int> returnableValues = [];
 
-            foreach (var number in sb.ToString().Split(','))
+            foreach (var number in acceptedValueCollector.ToString().Split(','))
             {
                 if (int.TryParse(number, out int parsedValue))
                 {
