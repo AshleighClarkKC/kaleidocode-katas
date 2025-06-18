@@ -12,7 +12,16 @@ public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixt
     [InlineData("", 0)]
     public void UserInput_EmptyString(string userInput, int expectedValue)
     {
-        AddNumbers(userInput, expectedValue);
+        // Arrange
+        _fixture.SetInputValue(userInput);
+        _fixture.SetTestCondition(input => int.IsNegative(input));
+
+        // Act
+        _fixture.Validate();
+        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
+
+        // Assert
+        Assert.Equal(expectedValue, addedValues);
     }
 
     [Theory]
@@ -21,7 +30,16 @@ public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixt
     [InlineData("19387\nsd029302\nse2013\nad972,127%\ran63à=192|1928&112", 1466)]
     public void UserInput_ValuesAdded(string userInput, int expectedNumber)
     {
-        AddNumbers(userInput, expectedNumber);
+        // Arrange
+        _fixture.SetInputValue(userInput);
+        _fixture.SetTestCondition(input => int.IsNegative(input));
+
+        // Act
+        _fixture.Validate();
+        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
+
+        // Assert
+        Assert.Equal(expectedNumber, addedValues);
     }
 
     [Theory]
@@ -30,25 +48,19 @@ public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixt
     {
         try
         {
+            // Arrange
             _fixture.SetInputValue(userInput);
             _fixture.SetTestCondition(input => int.IsNegative(input));
-            bool successful = _fixture.Validate();
 
+            // Act
+            bool successful = _fixture.Validate();
             int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
         }
         catch (Exception ex)
         {
+            // Assert
             Assert.Equal(!string.IsNullOrEmpty(ex.Message), errorMessageExpected);
         }
     }
 
-    private void AddNumbers(string input, int expected)
-    {
-        _fixture.SetInputValue(input);
-        _fixture.SetTestCondition(input => int.IsNegative(input));
-        bool successful = _fixture.Validate();
-
-        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
-        Assert.Equal(expected, addedValues);
-    }
 }

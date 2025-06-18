@@ -12,7 +12,16 @@ namespace Kaleidocode.Katas.Tests
         [InlineData("", 0)]
         public void UserInput_EmptyString(string userInput, int expectedValue)
         {
-            SubtractNumbers(userInput, expectedValue);
+            // Arrange
+            _fixture.SetInputValue(userInput);
+            _fixture.SetTestCondition(input => input > 1000);
+
+            // Act
+            bool successful = _fixture.Validate();
+            int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
+
+            // Assert
+            Assert.Equal(expectedValue, subtractedValues);
         }
 
         [Theory]
@@ -26,44 +35,41 @@ namespace Kaleidocode.Katas.Tests
         //[InlineData()]
         public void UserInput_SimpleEntry(string userInput, int expectedValue)
         {
-            SubtractNumbers(userInput, expectedValue);
+            // Arrange
+            _fixture.SetInputValue(userInput);
+            _fixture.SetTestCondition(input => input > 1000);
+
+            // Act
+            bool successful = _fixture.Validate();
+            int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
+
+            // Assert
+            Assert.Equal(expectedValue, subtractedValues);
         }
 
         [Theory]
         [InlineData("e\\-293&&29384--90|123", true)]
         public void UserInput_ExceededLimit(string userInput, bool errorMessageRendered)
         {
-            var expectedErrorMessage = SubtractNumbersWithError(userInput);
-            Assert.Equal(errorMessageRendered, !string.IsNullOrEmpty(expectedErrorMessage));
-        }
-
-        private void SubtractNumbers(string input, int expected)
-        {
-            _fixture.SetInputValue(input);
-            _fixture.SetTestCondition(input => input > 1000);
-            bool successful = _fixture.Validate();
-
-            int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
-            Assert.Equal(expected, subtractedValues);
-        }
-
-        private string SubtractNumbersWithError(string input)
-        {
             string? errorMessage = string.Empty;
 
             try
             {
-                _fixture.SetInputValue(input);
+                // Arrange
+                _fixture.SetInputValue(userInput);
                 _fixture.SetTestCondition(input => input > 1000);
+
+                // Act
                 bool successful = _fixture.Validate();
                 int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 errorMessage = ex.Message;
             }
 
-            return errorMessage;
+            // Assert
+            Assert.Equal(errorMessageRendered, !string.IsNullOrEmpty(errorMessage));
         }
 
     }
