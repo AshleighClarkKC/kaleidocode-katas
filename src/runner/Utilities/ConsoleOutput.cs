@@ -4,7 +4,6 @@ using Kaleidocode.Katas.Libraries.Contracts;
 using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Templates;
-using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 using Kaleidocode.Katas.Runner.Enumerations;
 using static System.Console;
 
@@ -88,7 +87,7 @@ public class ConsoleOutput
         try
         {
             bool evaluationSuccessful = validator.Validate(
-                            errorMessageTemplate: input => MessageTemplates.GenerateErrorString(errorCondition, input)
+                errorMessageTemplate: input => MessageTemplates.GenerateErrorString(errorCondition, input)
             );
 
             int sumOfNumbersInCollection = userOption switch {

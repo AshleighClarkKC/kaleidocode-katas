@@ -35,8 +35,6 @@ do
                     userOption: UserOption.AdditionCalculator
                 );
 
-                Console.WriteLine("\nYou will now be redirected back to the initial menu.\n");
-
                 break;
             }
         case (int) UserOption.SubtractionCalculator:
@@ -55,11 +53,13 @@ do
                     errorCondition: ErrorCondition.NumbersExceedingLimit,
                     userOption: UserOption.SubtractionCalculator
                 );
-                
+
                 break;
             }
         case (int) UserOption.Exit: { break; }
         default: { break; }
     }
+
+    Console.WriteLine("\nYou will now be redirected back to the initial menu.\n");
 }
 while (!userChoice.Equals((int) UserOption.Exit));
