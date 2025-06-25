@@ -7,7 +7,20 @@ namespace Kaleidocode.Katas.Tests
     public class ReaderTest : ReaderFixture
     {
         [Fact]
-        public async Task Given_FileIsProvided_WhenRead_PrintsData()
+        public void Given_FileIsProvided_WhenRead_PrintsData()
+        {
+            // Given
+            var testFileReader = base.GetFileReader();
+
+            // When
+            var testText = testFileReader.ReadFile();
+
+            // Then
+            Assert.Equal(5, testText!.Length);
+        }
+
+        [Fact]
+        public async Task Given_FileIsProvided_WhenReadAsync_PrintsData()
         {
             // Given
             var testFileReader = base.GetFileReader();
@@ -31,7 +44,8 @@ namespace Kaleidocode.Katas.Tests
             var testTextCollection = await testFileFileReader.ReadFileAsync();
 
             // When
-            var inputParser = new LineParser(testTextCollection);
+            var inputParser = new LineParser();
+            inputParser.SetInputCollection(testTextCollection!);
             var collectedLineCount = inputParser.CollectValues();
 
             // Then
