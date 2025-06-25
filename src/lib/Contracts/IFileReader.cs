@@ -9,7 +9,5 @@ namespace Kaleidocode.Katas.Libraries.Contracts
     public interface IFileReader
     {
         string[] ReadFile();
-
-        Task<string[]?> ReadFileAsync(CancellationToken? cancellationToken = null);
     }
 }

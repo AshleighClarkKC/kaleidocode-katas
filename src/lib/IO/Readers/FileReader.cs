@@ -27,24 +27,5 @@ namespace Kaleidocode.Katas.Libraries.IO.Readers
                 throw new Exception($"IO Operation Failure: {ex.Message}.");
             }
         }
-
-        public async Task<string[]?> ReadFileAsync(CancellationToken? cancellationToken = null)
-        {
-            if (string.IsNullOrEmpty(FilePath)) 
-            { 
-                throw new NullReferenceException(
-                    MessageTemplateHelper.GenerateGenericErrorString(ErrorCondition.ValueRequired, nameof(FilePath))
-                ); 
-            }
-
-            try
-            {
-                return await File.ReadAllLinesAsync(FilePath, cancellationToken ?? default);
-            }
-            catch (Exception ex) 
-            {
-                throw new Exception($"IO Operation Failure: {ex.Message}.");
-            }
-        }
     }
 }

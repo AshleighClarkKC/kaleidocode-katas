@@ -19,29 +19,16 @@ namespace Kaleidocode.Katas.Tests
             Assert.Equal(5, testText!.Length);
         }
 
-        [Fact]
-        public async Task Given_FileIsProvided_WhenReadAsync_PrintsData()
-        {
-            // Given
-            var testFileReader = base.GetFileReader();
-
-            // When
-            var testText = await testFileReader.ReadFileAsync();
-
-            // Then
-            Assert.Equal(5, testText!.Length);
-        }
-
         [Theory]
         [InlineData(0, 1)]
         [InlineData(1, 3)]
         [InlineData(2, 1)]
         [InlineData(3, 4)]
-        public async Task Given_FileIsProvided_WhenEachLineValidated_NumberIsGiven(int lineCount, int uniqueCharacterCount)
+        public void Given_FileIsProvided_WhenEachLineValidated_NumberIsGiven(int lineCount, int uniqueCharacterCount)
         {
             // Given
             var testFileFileReader = base.GetFileReader();
-            var testTextCollection = await testFileFileReader.ReadFileAsync();
+            var testTextCollection = testFileFileReader.ReadFile();
 
             // When
             var inputParser = new LineParser();
