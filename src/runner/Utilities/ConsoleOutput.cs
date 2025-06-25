@@ -5,6 +5,7 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Templates;
 using Kaleidocode.Katas.Runner.Enumerations;
+using Microsoft.Extensions.Configuration;
 using static System.Console;
 
 public class ConsoleOutput
@@ -82,7 +83,8 @@ public class ConsoleOutput
         IEnumerable<int> parsedNumbers, 
         IValidator validator, 
         ErrorCondition errorCondition, 
-        UserOption userOption)
+        UserOption userOption,
+        IConfiguration configuration)
     {
         try
         {
@@ -90,8 +92,10 @@ public class ConsoleOutput
                 errorMessageTemplate: input => MessageTemplates.GenerateErrorString(errorCondition, input)
             );
 
+            int maxValue = int.Parse(configuration["Limits:Addition"]!);
+
             int sumOfNumbersInCollection = userOption switch {
-                UserOption.AdditionCalculator => ArithmeticHelper.Add(parsedNumbers),
+                UserOption.AdditionCalculator => ArithmeticHelper.Add(parsedNumbers, maxValue),
                 UserOption.SubtractionCalculator => ArithmeticHelper.Subtract(parsedNumbers),
                 _ => throw new ArgumentOutOfRangeException(paramName: nameof(userOption))
             };
@@ -100,7 +104,7 @@ public class ConsoleOutput
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"\nERROR: {ex.Message}\n");
+            WriteLine($"\nERROR: {ex.Message}\n");
         }
     }
 

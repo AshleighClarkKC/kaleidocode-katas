@@ -5,9 +5,16 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 using Kaleidocode.Katas.Libraries.Contracts;
 using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
+using Microsoft.Extensions.Configuration;
+
 int userChoice;
 IValidator inputValidator;
 IParser inputParser;
+
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("appsettings.json", false)
+    .Build();
 
 do
 {
@@ -32,7 +39,8 @@ do
                     parsedNumbers: collectedNumbers,
                     validator: inputValidator,
                     errorCondition: ErrorCondition.NegativeValuesNotAllowed,
-                    userOption: UserOption.AdditionCalculator
+                    userOption: UserOption.AdditionCalculator,
+                    configuration: configuration
                 );
 
                 break;
@@ -51,7 +59,8 @@ do
                     parsedNumbers: collectedNumbers,
                     validator: inputValidator,
                     errorCondition: ErrorCondition.NumbersExceedingLimit,
-                    userOption: UserOption.SubtractionCalculator
+                    userOption: UserOption.SubtractionCalculator,
+                    configuration: configuration
                 );
 
                 break;
