@@ -10,17 +10,17 @@ namespace Kaleidocode.Katas.Tests
 
         [Theory]
         [InlineData("", 0)]
-        public void UserInput_EmptyString(string userInput, int expectedValue)
+        public void Given_UserProvidesNoInput_When_Validates_Returns_Zero(string userInput, int expectedValue)
         {
-            // Arrange
+            // Given
             _fixture.SetInputValue(userInput);
             _fixture.SetTestCondition(input => input > 1000);
 
-            // Act
+            // When
             bool successful = _fixture.Validate();
             int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
 
-            // Assert
+            // Then
             Assert.Equal(expectedValue, subtractedValues);
         }
 
@@ -32,34 +32,33 @@ namespace Kaleidocode.Katas.Tests
         [InlineData("0;\\t-12<>49", -61)]
         [InlineData("10\\n\\s19", -29)]
         [InlineData("f\\-79,902&&12", -998)]
-        //[InlineData()]
-        public void UserInput_SimpleEntry(string userInput, int expectedValue)
+        public void Given_UserProvidesNumbers_When_Validated_IsEqual(string userInput, int expectedValue)
         {
-            // Arrange
+            // Given
             _fixture.SetInputValue(userInput);
             _fixture.SetTestCondition(input => input > 1000);
 
-            // Act
+            // When
             bool successful = _fixture.Validate();
             int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
 
-            // Assert
+            // Then
             Assert.Equal(expectedValue, subtractedValues);
         }
 
         [Theory]
         [InlineData("e\\-293&&29384--90|123", true)]
-        public void UserInput_ExceededLimit(string userInput, bool errorMessageRendered)
+        public void Given_UserProvidesInput_When_Validated_Fails_With_Message(string userInput, bool errorMessageRendered)
         {
             string? errorMessage = string.Empty;
 
             try
             {
-                // Arrange
+                // Given
                 _fixture.SetInputValue(userInput);
                 _fixture.SetTestCondition(input => input > 1000);
 
-                // Act
+                // When
                 bool successful = _fixture.Validate();
                 int subtractedValues = ArithmeticHelper.Subtract(_fixture.GetCollectedValues());
             }
@@ -68,7 +67,7 @@ namespace Kaleidocode.Katas.Tests
                 errorMessage = ex.Message;
             }
 
-            // Assert
+            // Then
             Assert.Equal(errorMessageRendered, !string.IsNullOrEmpty(errorMessage));
         }
 
