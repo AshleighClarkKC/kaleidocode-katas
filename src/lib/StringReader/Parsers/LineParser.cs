@@ -5,9 +5,9 @@ using System.Text;
 
 namespace Kaleidocode.Katas.Libraries.StringReader.Parsers
 {
-    public class LineParser(string[] lineCollection) : IStringParser
+    public class LineParser() : IStringParser
     {
-        private string[] ValueCollection { get; set; } = lineCollection;
+        private string[] ValueCollection { get; set; } = [];
 
         public void SetInputCollection(string[] valueCollection)
             => ValueCollection = valueCollection;
@@ -32,6 +32,7 @@ namespace Kaleidocode.Katas.Libraries.StringReader.Parsers
             {
                 if (line == "end")
                 {
+                    result.Add("(last line skipped)");
                     break;
                 }
 

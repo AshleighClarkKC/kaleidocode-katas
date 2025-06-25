@@ -1,4 +1,5 @@
-﻿using Kaleidocode.Katas.Libraries.IO.Readers;
+﻿using Kaleidocode.Katas.Libraries.Contracts;
+using Kaleidocode.Katas.Libraries.IO.Readers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace Kaleidocode.Katas.Tests.Fixtures
 {
     public class ReaderFixture
     {
-        internal FileReader GetFileReader()
+        internal IFileReader GetFileReader()
         {
             return new FileReader($"{Directory.GetCurrentDirectory()}\\Specimen\\test.txt");
         }
