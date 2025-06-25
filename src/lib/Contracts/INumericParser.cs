@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
+﻿using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
-namespace Kaleidocode.Katas.Libraries.Contracts
+namespace Kaleidocode.Katas.Libraries.Contracts;
+
+public interface INumericParser
 {
-    public interface INumericParser
-    {
-        void SetInputValue(string input);
+    void SetInputValue(string input);
 
-        IEnumerable<int> CollectValues(ExtractionMethod extractionMethod);
-    }
+    IEnumerable<int> CollectValues(ExtractionMethod extractionMethod);
 }

@@ -5,42 +5,41 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Templates;
 using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 using Kaleidocode.Katas.Tests.Contracts;
 
-namespace Kaleidocode.Katas.Tests.Fixtures
+namespace Kaleidocode.Katas.Tests.Fixtures;
+
+public class SubtractionFixture : IFixture, IDisposable
 {
-    public class SubtractionFixture : IFixture, IDisposable
+    private readonly IValidator _inputValidator;
+
+    private readonly INumericParser _inputParser;
+
+    private IEnumerable<int> CollectedValues { get; set; } = [];
+
+    public SubtractionFixture()
     {
-        private readonly IValidator _inputValidator;
+        _inputParser = new InputParser(string.Empty);
+        _inputValidator = new OperationValidator(CollectedValues, null);
+    }
 
-        private readonly INumericParser _inputParser;
+    public void SetTestCondition(Func<int, bool> condition)
+        => _inputValidator.SetValidationCondition(condition);
 
-        private IEnumerable<int> CollectedValues { get; set; } = [];
+    public void SetInputValue(string inputValue)
+        => _inputParser.SetInputValue(inputValue);
 
-        public SubtractionFixture()
-        {
-            _inputParser = new InputParser(string.Empty);
-            _inputValidator = new OperationValidator(CollectedValues, null);
-        }
+    public IEnumerable<int> GetCollectedValues()
+        => CollectedValues;
 
-        public void SetTestCondition(Func<int, bool> condition)
-            => _inputValidator.SetValidationCondition(condition);
+    public bool Validate()
+    {
+        CollectedValues = _inputParser.CollectValues(ExtractionMethod.Alphanumeric);
+        _inputValidator.SetInputCollection(CollectedValues);
+        return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NumbersExceedingLimit, input));
+    }
 
-        public void SetInputValue(string inputValue)
-            => _inputParser.SetInputValue(inputValue);
-
-        public IEnumerable<int> GetCollectedValues()
-            => CollectedValues;
-
-        public bool Validate()
-        {
-            CollectedValues = _inputParser.CollectValues(ExtractionMethod.Alphanumeric);
-            _inputValidator.SetInputCollection(CollectedValues);
-            return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NumbersExceedingLimit, input));
-        }
-
-        public void Dispose()
-        {
-            CollectedValues = [];
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        CollectedValues = [];
+        GC.SuppressFinalize(this);
     }
 }

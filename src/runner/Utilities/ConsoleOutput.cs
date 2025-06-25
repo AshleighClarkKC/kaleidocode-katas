@@ -1,6 +1,4 @@
-﻿namespace Kaleidocode.Katas.Runner.Utilities;
-
-using Kaleidocode.Katas.Libraries.Contracts;
+﻿using Kaleidocode.Katas.Libraries.Contracts;
 using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Templates;
@@ -8,6 +6,8 @@ using Kaleidocode.Katas.Runner.Constants;
 using Kaleidocode.Katas.Runner.Enumerations;
 using Microsoft.Extensions.Configuration;
 using static System.Console;
+
+namespace Kaleidocode.Katas.Runner.Utilities;
 
 public class ConsoleOutput
 {

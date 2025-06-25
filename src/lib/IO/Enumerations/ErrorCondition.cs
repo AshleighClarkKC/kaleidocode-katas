@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Kaleidocode.Katas.Libraries.IO.Enumerations;
 
-namespace Kaleidocode.Katas.Libraries.IO.Enumerations
+public enum ErrorCondition
 {
-    public enum ErrorCondition
-    {
-        ValueRequired = 1,
-        Undefined = 2
-    }
+    ValueRequired = 1,
+    Undefined = 2
 }
+

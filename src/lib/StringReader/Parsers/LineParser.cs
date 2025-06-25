@@ -1,86 +1,82 @@
-﻿
-using Kaleidocode.Katas.Libraries.Contracts;
-using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
-using System.Text;
+﻿using Kaleidocode.Katas.Libraries.Contracts;
 
-namespace Kaleidocode.Katas.Libraries.StringReader.Parsers
+namespace Kaleidocode.Katas.Libraries.StringReader.Parsers;
+
+public class LineParser() : IStringParser
 {
-    public class LineParser() : IStringParser
+    private string[] ValueCollection { get; set; } = [];
+
+    public void SetInputCollection(string[] valueCollection)
+        => ValueCollection = valueCollection;
+
+    public IEnumerable<string> CollectValues()
     {
-        private string[] ValueCollection { get; set; } = [];
+        return CountLetterInstancesPerLine(ValueCollection);
+    }
 
-        public void SetInputCollection(string[] valueCollection)
-            => ValueCollection = valueCollection;
+    private IEnumerable<string> CountLetterInstancesPerLine(string[]? lineCollection)
+    {
+        List<string> result = [];
 
-        public IEnumerable<string> CollectValues()
+        if (lineCollection?.Length == 0 || lineCollection == null)
         {
-            return CountLetterInstancesPerLine(ValueCollection);
+            throw new ArgumentNullException(nameof(lineCollection));
         }
 
-        private IEnumerable<string> CountLetterInstancesPerLine(string[]? lineCollection)
-        {
-            List<string> result = [];
+        int lineCounter = 1;
 
-            if (lineCollection?.Length == 0 || lineCollection == null)
+        foreach (var line in lineCollection)
+        {
+            if (line == "end")
             {
-                throw new ArgumentNullException(nameof(lineCollection));
+                result.Add("(last line skipped)");
+                break;
             }
 
-            int lineCounter = 1;
-
-            foreach (var line in lineCollection)
+            if (line.TrimEnd().Length == 1)
             {
-                if (line == "end")
-                {
-                    result.Add("(last line skipped)");
-                    break;
-                }
+                result.Add($"Case {lineCounter}: {line.Length}");
+            }
+            else
+            {
+                var distinctCollectionMultipleCharacters = line
+                    .GroupBy(gb => gb)
+                    .Where(w => w.Count() > 1)
+                    .Select(s => s.Key);
 
-                if (line.TrimEnd().Length == 1)
-                {
-                    result.Add($"Case {lineCounter}: {line.Length}");
-                }
-                else
-                {
-                    var distinctCollectionMultipleCharacters = line
-                        .GroupBy(gb => gb)
-                        .Where(w => w.Count() > 1)
-                        .Select(s => s.Key);
+                int uniqueCharacterCount = 0;
+                bool firstRepeatedInstanceFound = false;
 
-                    int uniqueCharacterCount = 0;
-                    bool firstRepeatedInstanceFound = false;
+                for (int charIndex = 0; charIndex < line.Length; charIndex++)
+                {
 
-                    for (int charIndex = 0; charIndex < line.Length; charIndex++)
+                    if (!firstRepeatedInstanceFound)
                     {
-
-                        if (!firstRepeatedInstanceFound)
+                        if (line[charIndex] == distinctCollectionMultipleCharacters.First())
                         {
-                            if (line[charIndex] == distinctCollectionMultipleCharacters.First())
-                            {
-                                firstRepeatedInstanceFound = true;
-                            }
+                            firstRepeatedInstanceFound = true;
+                        }
 
-                            uniqueCharacterCount++;
+                        uniqueCharacterCount++;
+                    }
+                    else
+                    {
+                        if (line[charIndex] == distinctCollectionMultipleCharacters.First())
+                        {
+                            break;
                         }
                         else
                         {
-                            if (line[charIndex] == distinctCollectionMultipleCharacters.First())
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                uniqueCharacterCount++;
-                            }
+                            uniqueCharacterCount++;
                         }
                     }
-
-                    result.Add($"Case {lineCounter}: {uniqueCharacterCount}");
                 }
-                lineCounter++;
-            }
 
-            return result.AsEnumerable();
+                result.Add($"Case {lineCounter}: {uniqueCharacterCount}");
+            }
+            lineCounter++;
         }
+
+        return result.AsEnumerable();
     }
 }

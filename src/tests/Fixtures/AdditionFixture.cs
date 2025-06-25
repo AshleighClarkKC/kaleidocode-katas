@@ -5,42 +5,41 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Templates;
 using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
 using Kaleidocode.Katas.Tests.Contracts;
 
-namespace Kaleidocode.Katas.Tests.Fixtures
+namespace Kaleidocode.Katas.Tests.Fixtures;
+
+public class AdditionFixture : IFixture, IDisposable
 {
-    public class AdditionFixture : IFixture, IDisposable
+    private readonly IValidator _inputValidator;
+
+    private readonly INumericParser _inputParser;
+
+    private IEnumerable<int> CollectedValues { get; set; } = [];
+
+    public AdditionFixture()
     {
-        private readonly IValidator _inputValidator;
+        _inputParser = new InputParser(string.Empty);
+        _inputValidator = new OperationValidator(CollectedValues, null);
+    }
 
-        private readonly INumericParser _inputParser;
+    public void SetTestCondition(Func<int, bool> testCondition)
+        => _inputValidator.SetValidationCondition(testCondition);
 
-        private IEnumerable<int> CollectedValues { get; set; } = [];
+    public void SetInputValue(string value)
+        => _inputParser.SetInputValue(value);
 
-        public AdditionFixture()
-        {
-            _inputParser = new InputParser(string.Empty);
-            _inputValidator = new OperationValidator(CollectedValues, null);
-        }
+    public IEnumerable<int> GetCollectedValues()
+        => CollectedValues;
 
-        public void SetTestCondition(Func<int, bool> testCondition)
-            => _inputValidator.SetValidationCondition(testCondition);
+    public bool Validate()
+    {
+        CollectedValues = _inputParser.CollectValues(ExtractionMethod.StrictNumeric);
+        _inputValidator.SetInputCollection(CollectedValues);
+        return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NegativeValuesNotAllowed, input));
+    }
 
-        public void SetInputValue(string value) 
-            => _inputParser.SetInputValue(value);
-
-        public IEnumerable<int> GetCollectedValues() 
-            => CollectedValues;
-
-        public bool Validate()
-        {
-            CollectedValues = _inputParser.CollectValues(ExtractionMethod.StrictNumeric);
-            _inputValidator.SetInputCollection(CollectedValues);
-            return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NegativeValuesNotAllowed, input));
-        }
-
-        public void Dispose() 
-        {
-            CollectedValues = [];
-            GC.SuppressFinalize(this);
-        }
+    public void Dispose()
+    {
+        CollectedValues = [];
+        GC.SuppressFinalize(this);
     }
 }

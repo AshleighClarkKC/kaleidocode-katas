@@ -1,16 +1,9 @@
-﻿using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Kaleidocode.Katas.Libraries.Contracts;
 
-namespace Kaleidocode.Katas.Libraries.Contracts
+public interface IStringParser
 {
-    public interface IStringParser
-    {
-        void SetInputCollection(string[] valueCollection);
+    void SetInputCollection(string[] valueCollection);
 
-        IEnumerable<string> CollectValues();
-    }
+    IEnumerable<string> CollectValues();
 }
+
