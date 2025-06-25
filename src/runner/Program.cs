@@ -1,51 +1,75 @@
-﻿using Kaleidocode.Katas.Runner.Enumerations;
-using static Kaleidocode.Katas.Runner.Utilities.ConsoleOutput;
+﻿using Kaleidocode.Katas.Runner.Constants;
+using Kaleidocode.Katas.Runner.Enumerations;
+using Kaleidocode.Katas.Runner.Utilities;
 using Kaleidocode.Katas.Libraries.StringCalculator.Parsers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
-using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
+using Kaleidocode.Katas.Libraries.Contracts;
+using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
+
+using Microsoft.Extensions.Configuration;
 
 int userChoice;
+IValidator inputValidator;
+IParser inputParser;
+
+IConfiguration configuration = new ConfigurationBuilder()
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile(ConfigurationConstants.CONFIGURATION_FILE_NAME, false)
+    .Build();
 
 do
 {
-    PrintWelcome();
-    PrintOptions();
-    userChoice = ProvideUserSelection();
+    ConsoleOutput.PrintWelcome();
+    ConsoleOutput.PrintOptions();
+    userChoice = ConsoleOutput.ProvideUserSelection();
+    inputParser = new InputParser();
 
     switch (userChoice) 
     {
-        case (int)UserOption.UserCalculator:
+        case (int) UserOption.AdditionCalculator:
             {
-                PrintStringCalculatorEntryPrompt();
-                string? delimitedNumbers = ProvideUserInputSection();
-                
-                try
-                {
-                    InputParser numParser = new (delimitedNumbers);
-                    IEnumerable<int> collectedNumbers = numParser.CollectNumbers();
-                    InputValidator inputValidator = new (collectedNumbers);
+                ConsoleOutput.PrintStringCalculatorEntryPrompt(UserOption.AdditionCalculator);
+                var collectedNumbers = ConsoleOutput.ProvideUserInputSection(inputParser, ExtractionMethod.StrictNumeric);
 
-                    bool evaluationSuccessful = inputValidator.EvaluateCollection();
+                inputValidator = new OperationValidator(
+                    parsedInputCollection: collectedNumbers,
+                    failureCondition: num => int.IsNegative(num)
+                );
 
-                    if (evaluationSuccessful)
-                    {
-                        ArithmeticHelper ah = new ();
-                        int sumOfNumbersInCollection = ah.Add(collectedNumbers);
-                        PrintValue(sumOfNumbersInCollection);
-                    }
-
-                }
-                catch(ArgumentOutOfRangeException oor)
-                {
-                    Console.WriteLine($"\nERROR: {oor.Message}\n");
-                }
-
-                Console.WriteLine("\nYou will now be redirected back to the initial menu.\n");
+                ConsoleOutput.HandleOperation(
+                    parsedNumbers: collectedNumbers,
+                    validator: inputValidator,
+                    errorCondition: ErrorCondition.NegativeValuesNotAllowed,
+                    userOption: UserOption.AdditionCalculator,
+                    configuration: configuration
+                );
 
                 break;
             }
-        case (int)UserOption.Exit: { break; }
+        case (int) UserOption.SubtractionCalculator:
+            {
+                ConsoleOutput.PrintStringCalculatorEntryPrompt(UserOption.SubtractionCalculator);
+                var collectedNumbers = ConsoleOutput.ProvideUserInputSection(inputParser, ExtractionMethod.Alphanumeric);
+
+                inputValidator = new OperationValidator(
+                    parsedInputCollection: collectedNumbers,
+                    failureCondition: num => num > 1000
+                );
+
+                ConsoleOutput.HandleOperation(
+                    parsedNumbers: collectedNumbers,
+                    validator: inputValidator,
+                    errorCondition: ErrorCondition.NumbersExceedingLimit,
+                    userOption: UserOption.SubtractionCalculator,
+                    configuration: configuration
+                );
+
+                break;
+            }
+        case (int) UserOption.Exit: { break; }
         default: { break; }
     }
+
+    Console.WriteLine("\nYou will now be redirected back to the initial menu.\n");
 }
-while (!userChoice.Equals((int)UserOption.Exit));
+while (!userChoice.Equals((int) UserOption.Exit));

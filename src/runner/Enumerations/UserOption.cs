@@ -8,7 +8,8 @@ namespace Kaleidocode.Katas.Runner.Enumerations
 {
     public enum UserOption
     {
-        UserCalculator = 1,
-        Exit = 2
+        AdditionCalculator = 1,
+        SubtractionCalculator = 2,
+        Exit = 3
     }
 }
