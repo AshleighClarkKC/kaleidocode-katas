@@ -7,10 +7,10 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
 namespace Kaleidocode.Katas.Libraries.Contracts
 {
-    public interface IParser
+    public interface INumericParser
     {
         void SetInputValue(string input);
 
-        IEnumerable<int> CollectNumbers(ExtractionMethod extractionMethod);
+        IEnumerable<int> CollectValues(ExtractionMethod extractionMethod);
     }
 }

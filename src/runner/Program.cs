@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 
 int userChoice;
 IValidator inputValidator;
-IParser inputParser;
+INumericParser inputParser;
 
 IConfiguration configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())

@@ -11,7 +11,7 @@ namespace Kaleidocode.Katas.Tests.Fixtures
     {
         private readonly IValidator _inputValidator;
 
-        private readonly IParser _inputParser;
+        private readonly INumericParser _inputParser;
 
         private IEnumerable<int> CollectedValues { get; set; } = [];
 
@@ -32,7 +32,7 @@ namespace Kaleidocode.Katas.Tests.Fixtures
 
         public bool Validate()
         {
-            CollectedValues = _inputParser.CollectNumbers(ExtractionMethod.Alphanumeric);
+            CollectedValues = _inputParser.CollectValues(ExtractionMethod.Alphanumeric);
             _inputValidator.SetInputCollection(CollectedValues);
             return _inputValidator.Validate(input => MessageTemplates.GenerateErrorString(ErrorCondition.NumbersExceedingLimit, input));
         }

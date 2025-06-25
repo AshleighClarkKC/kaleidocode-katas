@@ -10,6 +10,7 @@ namespace Kaleidocode.Katas.Runner.Enumerations
     {
         AdditionCalculator = 1,
         SubtractionCalculator = 2,
-        Exit = 3
+        FileReader = 3,
+        Exit = 4
     }
 }

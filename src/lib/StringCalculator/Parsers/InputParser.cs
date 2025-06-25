@@ -4,14 +4,14 @@ using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 
 namespace Kaleidocode.Katas.Libraries.StringCalculator.Parsers
 {
-    public class InputParser(string? userInput = null) : IParser
+    public class InputParser(string? userInput = null) : INumericParser
     {
         public string? UserInput { get; private set; } = userInput ?? string.Empty;
 
         public void SetInputValue(string value) 
             => UserInput = value;
 
-        public IEnumerable<int> CollectNumbers(ExtractionMethod extractionMethod)
+        public IEnumerable<int> CollectValues(ExtractionMethod extractionMethod)
         {
             if (string.IsNullOrEmpty(UserInput)) { return [0]; }
 

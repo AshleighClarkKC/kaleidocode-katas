@@ -28,7 +28,8 @@ public class ConsoleOutput
     [
         "1. Add Some Values.",
         "2. Subtract Some Values.",
-        "3. Exit the Application."
+        "3. Read a File and Arrange Values.",
+        "4. Exit the Application."
     ];
 
     public static void PrintOptions()
@@ -67,12 +68,12 @@ public class ConsoleOutput
             _ => throw new ArgumentOutOfRangeException(paramName: Enum.GetName<UserOption>(userOption))
         };
 
-    public static IEnumerable<int> ProvideUserInputSection(IParser parser, ExtractionMethod extractionMethod)
+    public static IEnumerable<int> ProvideUserInputSection(INumericParser parser, ExtractionMethod extractionMethod)
     {
         WriteLine("Your Input -> ");
         string? userInput = ReadLine() ?? string.Empty;
         parser.SetInputValue(userInput);
-        return parser.CollectNumbers(extractionMethod);
+        return parser.CollectValues(extractionMethod);
     }
 
     public static void PrintValue(int? value)
