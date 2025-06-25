@@ -6,7 +6,7 @@ namespace Kaleidocode.Katas.Libraries.StringCalculator.Helpers
 {
     public static class ArithmeticHelper
     {
-        public static int Add(IEnumerable<int> values, int? maxValue = 1000) 
+        public static int Add(IEnumerable<int> values, int maxValue) 
             // Values over the maxVal are to be ignored by rule of Kata 1.
             => (values.Where(w => w < maxValue))
                 .Sum();

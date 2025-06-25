@@ -4,6 +4,7 @@ using Kaleidocode.Katas.Libraries.Contracts;
 using Kaleidocode.Katas.Libraries.StringCalculator.Enumerations;
 using Kaleidocode.Katas.Libraries.StringCalculator.Helpers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Templates;
+using Kaleidocode.Katas.Runner.Constants;
 using Kaleidocode.Katas.Runner.Enumerations;
 using Microsoft.Extensions.Configuration;
 using static System.Console;
@@ -92,7 +93,7 @@ public class ConsoleOutput
                 errorMessageTemplate: input => MessageTemplates.GenerateErrorString(errorCondition, input)
             );
 
-            int maxValue = int.Parse(configuration["Limits:Addition"]!);
+            int maxValue = int.Parse(configuration[ConfigurationConstants.ADDITION_MAX_VALUE_KEY]!);
 
             int sumOfNumbersInCollection = userOption switch {
                 UserOption.AdditionCalculator => ArithmeticHelper.Add(parsedNumbers, maxValue),

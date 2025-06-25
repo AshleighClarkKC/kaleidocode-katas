@@ -18,7 +18,7 @@ public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixt
 
         // Act
         _fixture.Validate();
-        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
+        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues(), _fixture.GetMaxValue());
 
         // Assert
         Assert.Equal(expectedValue, addedValues);
@@ -36,7 +36,7 @@ public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixt
 
         // Act
         _fixture.Validate();
-        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
+        int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues(), _fixture.GetMaxValue());
 
         // Assert
         Assert.Equal(expectedNumber, addedValues);
@@ -54,7 +54,7 @@ public class AdditionTests(AdditionFixture fixture) : IClassFixture<AdditionFixt
 
             // Act
             bool successful = _fixture.Validate();
-            int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues());
+            int addedValues = ArithmeticHelper.Add(_fixture.GetCollectedValues(), _fixture.GetMaxValue());
         }
         catch (Exception ex)
         {

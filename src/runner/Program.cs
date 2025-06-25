@@ -1,4 +1,5 @@
-﻿using Kaleidocode.Katas.Runner.Enumerations;
+﻿using Kaleidocode.Katas.Runner.Constants;
+using Kaleidocode.Katas.Runner.Enumerations;
 using Kaleidocode.Katas.Runner.Utilities;
 using Kaleidocode.Katas.Libraries.StringCalculator.Parsers;
 using Kaleidocode.Katas.Libraries.StringCalculator.Validators;
@@ -13,7 +14,7 @@ IParser inputParser;
 
 IConfiguration configuration = new ConfigurationBuilder()
     .SetBasePath(Directory.GetCurrentDirectory())
-    .AddJsonFile("appsettings.json", false)
+    .AddJsonFile(ConfigurationConstants.CONFIGURATION_FILE_NAME, false)
     .Build();
 
 do
