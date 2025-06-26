@@ -1,0 +1,29 @@
+﻿using Kaleidocode.Katas.Libraries.Contracts;
+using Kaleidocode.Katas.Libraries.IO.Enumerations;
+using Kaleidocode.Katas.Libraries.IO.Helpers;
+
+namespace Kaleidocode.Katas.Libraries.IO.Readers;
+
+public class FileReader(string filePath) : IFileReader
+{
+    private string FilePath { get; set; } = filePath;
+
+    public string[] ReadFile()
+    {
+        if (string.IsNullOrEmpty(FilePath))
+        {
+            throw new NullReferenceException(
+                MessageTemplateHelper.GenerateGenericErrorString(ErrorCondition.ValueRequired, nameof(FilePath))
+            );
+        }
+
+        try
+        {
+            return File.ReadAllLines(FilePath);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception($"IO Operation Failure: {ex.Message}.");
+        }
+    }
+}

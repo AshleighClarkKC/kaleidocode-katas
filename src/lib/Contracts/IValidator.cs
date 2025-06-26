@@ -1,4 +1,3 @@
-
 namespace Kaleidocode.Katas.Libraries.Contracts;
 
 public interface IValidator
